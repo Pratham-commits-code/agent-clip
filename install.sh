@@ -52,10 +52,10 @@ fi
 
 if [ -n "$remote" ]; then
   echo "Setting up clip on $remote..."
-  ssh -o BatchMode=yes -o ConnectTimeout=10 "$remote" 'test "$(uname)" = Darwin && mkdir -p ~/.local/bin' \
+  ssh -n -o BatchMode=yes -o ConnectTimeout=10 "$remote" 'test "$(uname)" = Darwin && mkdir -p ~/.local/bin' \
     || fail "can't reach $remote as a Mac over SSH without a password prompt. Set up SSH keys (ssh-copy-id $remote), then re-run."
   scp -q "$BIN_DIR/clip" "$remote:.local/bin/clip"
-  ssh -o BatchMode=yes "$remote" '~/.local/bin/clip --local --types >/dev/null' \
+  ssh -n -o BatchMode=yes "$remote" '~/.local/bin/clip --local --types >/dev/null' \
     || fail "clip installed on $remote but can't read its clipboard. Make sure you're logged in there."
   echo "clip on $remote is ready."
 fi
